@@ -26,13 +26,13 @@ let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-
+    
     if (currentScroll > 50) {
         navbar.classList.add('scrolled');
     } else {
         navbar.classList.remove('scrolled');
     }
-
+    
     lastScroll = currentScroll;
 });
 
@@ -60,13 +60,13 @@ const sections = document.querySelectorAll('section[id]');
 
 function scrollActive() {
     const scrollY = window.pageYOffset;
-
+    
     sections.forEach(section => {
         const sectionHeight = section.offsetHeight;
         const sectionTop = section.offsetTop - 100;
         const sectionId = section.getAttribute('id');
         const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-
+        
         if (navLink) {
             if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
                 navLink.classList.add('active');
@@ -132,23 +132,23 @@ const contactForm = document.getElementById('contact-form');
 
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
+    
     // Get form data
     const formData = new FormData(contactForm);
     const name = formData.get('name');
     const email = formData.get('email');
     const subject = formData.get('subject');
     const message = formData.get('message');
-
-    // Create mailto link
-    const mailtoLink = `mailto:gawandedakash95@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
-
+    
+    // Create mailto link (for demonstration - you can integrate with a backend service)
+    const mailtoLink = `mailto:akashgawande341@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+    
     // Open default email client
     window.location.href = mailtoLink;
-
+    
     // Show success message
     showNotification('Message prepared! Your email client should open shortly.', 'success');
-
+    
     // Reset form
     contactForm.reset();
 });
@@ -157,15 +157,18 @@ contactForm.addEventListener('submit', (e) => {
 // Notification System
 // ===========================
 function showNotification(message, type = 'info') {
+    // Remove existing notification if any
     const existingNotification = document.querySelector('.notification');
     if (existingNotification) {
         existingNotification.remove();
     }
-
+    
+    // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
-
+    
+    // Add styles
     notification.style.cssText = `
         position: fixed;
         top: 100px;
@@ -179,15 +182,18 @@ function showNotification(message, type = 'info') {
         animation: slideIn 0.3s ease;
         max-width: 300px;
     `;
-
+    
+    // Add to body
     document.body.appendChild(notification);
-
+    
+    // Remove after 3 seconds
     setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
 
+// Add animation keyframes
 const styleSheet = document.createElement('style');
 styleSheet.textContent = `
     @keyframes slideIn {
@@ -200,7 +206,7 @@ styleSheet.textContent = `
             opacity: 1;
         }
     }
-
+    
     @keyframes slideOut {
         from {
             transform: translateX(0);
@@ -211,11 +217,11 @@ styleSheet.textContent = `
             opacity: 0;
         }
     }
-
+    
     .nav-link.active {
         color: var(--primary-color);
     }
-
+    
     .nav-link.active::after {
         width: 100%;
     }
@@ -228,7 +234,7 @@ document.head.appendChild(styleSheet);
 function typeWriter(element, text, speed = 100) {
     let i = 0;
     element.textContent = '';
-
+    
     function type() {
         if (i < text.length) {
             element.textContent += text.charAt(i);
@@ -236,10 +242,11 @@ function typeWriter(element, text, speed = 100) {
             setTimeout(type, speed);
         }
     }
-
+    
     type();
 }
 
+// Apply typing effect on page load
 window.addEventListener('load', () => {
     const heroSubtitle = document.querySelector('.hero-subtitle');
     const originalText = heroSubtitle.textContent;
@@ -254,7 +261,7 @@ skillTags.forEach(tag => {
     tag.addEventListener('mouseenter', function() {
         this.style.transform = 'translateY(-3px) scale(1.05)';
     });
-
+    
     tag.addEventListener('mouseleave', function() {
         this.style.transform = 'translateY(0) scale(1)';
     });
@@ -284,7 +291,7 @@ function animateCounter(element, target, duration = 2000) {
     const start = 0;
     const increment = target / (duration / 16);
     let current = start;
-
+    
     const timer = setInterval(() => {
         current += increment;
         if (current >= target) {
@@ -296,13 +303,14 @@ function animateCounter(element, target, duration = 2000) {
     }, 16);
 }
 
+// Trigger counter animation when in view
 const highlightObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting && !entry.target.dataset.animated) {
             const h3 = entry.target.querySelector('h3');
             const text = h3.textContent;
             const number = parseInt(text);
-
+            
             if (!isNaN(number)) {
                 entry.target.dataset.animated = 'true';
                 animateCounter(h3, number);
@@ -316,7 +324,7 @@ document.querySelectorAll('.highlight-item').forEach(item => {
 });
 
 // ===========================
-// Lazy Loading for Images
+// Lazy Loading for Images (if you add images later)
 // ===========================
 if ('IntersectionObserver' in window) {
     const imageObserver = new IntersectionObserver((entries) => {
@@ -329,21 +337,21 @@ if ('IntersectionObserver' in window) {
             }
         });
     });
-
+    
     document.querySelectorAll('img.lazy').forEach(img => {
         imageObserver.observe(img);
     });
 }
 
 // ===========================
-// Print Resume Function
+// Print Resume Function (optional)
 // ===========================
 function printResume() {
     window.print();
 }
 
 // ===========================
-// Dark Mode Toggle
+// Dark Mode Toggle (optional enhancement for future)
 // ===========================
 function initDarkMode() {
     const darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -352,18 +360,21 @@ function initDarkMode() {
             document.body.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
         });
-
+        
+        // Check for saved dark mode preference
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark-mode');
         }
     }
 }
 
+// Initialize dark mode if toggle exists
 initDarkMode();
 
 // ===========================
 // Performance Optimization
 // ===========================
+// Debounce function for scroll events
 function debounce(func, wait = 10) {
     let timeout;
     return function executedFunction(...args) {
@@ -376,6 +387,7 @@ function debounce(func, wait = 10) {
     };
 }
 
+// Apply debounce to scroll event handlers
 window.addEventListener('scroll', debounce(() => {
     scrollActive();
 }));
